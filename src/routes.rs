@@ -20,7 +20,7 @@ pub(crate) async fn get_status() -> Result<Json<StatusResponse>> {
 
 #[derive(Debug, PartialEq, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct WebhookRequest {
+pub struct UnlimitWebhookRequest {
     pub reference_id: String,
     pub event_type: String,
     pub status: String,
@@ -28,15 +28,32 @@ pub struct WebhookRequest {
 }
 
 #[derive(Debug, Serialize)]
-pub struct WebhookResponse {}
+pub struct UnlimitWebhookResponse {}
 
 #[post("/ramps/unlimit/webhook")]
 pub(crate) async fn unlimit_webhook_handler(
-    body: web::Json<WebhookRequest>,
-) -> Result<Json<WebhookResponse>> {
-    info!("Received request with body: {body:#?}");
+    body: web::Json<UnlimitWebhookRequest>,
+) -> Result<Json<UnlimitWebhookResponse>> {
+    info!("Received Unlimit webhook request with body: {body:#?}");
 
-    Ok(web::Json(WebhookResponse {}))
+    Ok(web::Json(UnlimitWebhookResponse {}))
+}
+
+#[derive(Debug, Deserialize)]
+pub struct PersonaWebhookRequest {
+    pub data: serde_json::Value,
+}
+
+#[derive(Debug, Serialize)]
+pub struct PersonaWebhookResponse {}
+
+#[post("/ramps/persona/webhook")]
+pub(crate) async fn persona_webhook_handler(
+    body: web::Json<PersonaWebhookRequest>,
+) -> Result<Json<PersonaWebhookResponse>> {
+    info!("Received Persona webhook request with body: {body:#?}");
+
+    Ok(web::Json(PersonaWebhookResponse {}))
 }
 
 #[cfg(test)]
@@ -60,10 +77,10 @@ mod tests {
         }
     }"#;
 
-        let webhook_req: WebhookRequest = serde_json::from_str(payload)?;
+        let webhook_req: UnlimitWebhookRequest = serde_json::from_str(payload)?;
         assert_eq!(
             webhook_req,
-            WebhookRequest {
+            UnlimitWebhookRequest {
                 reference_id: "submissionId".to_string(),
                 event_type: "KYC".to_string(),
                 status: "IN_REVIEW".to_string(),
