@@ -35,7 +35,6 @@ pub(crate) async fn unlimit_webhook_handler(
     body: web::Json<UnlimitWebhookRequest>,
 ) -> Result<Json<UnlimitWebhookResponse>> {
     info!("Received Unlimit webhook request with body: {body:#?}");
-
     Ok(web::Json(UnlimitWebhookResponse {}))
 }
 
@@ -52,8 +51,23 @@ pub(crate) async fn persona_webhook_handler(
     body: web::Json<PersonaWebhookRequest>,
 ) -> Result<Json<PersonaWebhookResponse>> {
     info!("Received Persona webhook request with body: {body:#?}");
-
     Ok(web::Json(PersonaWebhookResponse {}))
+}
+
+#[derive(Debug, Deserialize)]
+pub struct SumsubWebhookRequest {
+    pub data: serde_json::Value,
+}
+
+#[derive(Debug, Serialize)]
+pub struct SumsubWebhookResponse {}
+
+#[post("/ramps/sumsub/webhook")]
+pub(crate) async fn sumsub_webhook_handler(
+    body: web::Json<SumsubWebhookRequest>,
+) -> Result<Json<SumsubWebhookResponse>> {
+    info!("Received Sumsub webhook request with body: {body:#?}");
+    Ok(web::Json(SumsubWebhookResponse {}))
 }
 
 #[cfg(test)]
