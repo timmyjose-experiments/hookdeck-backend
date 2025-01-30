@@ -56,6 +56,7 @@ pub(crate) async fn persona_webhook_handler(
 
 #[derive(Debug, Deserialize)]
 pub struct SumsubWebhookRequest {
+    #[serde(flatten)]
     pub data: serde_json::Value,
 }
 
