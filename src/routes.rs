@@ -71,6 +71,23 @@ pub(crate) async fn sumsub_webhook_handler(
     Ok(web::Json(SumsubWebhookResponse {}))
 }
 
+#[derive(Debug, Deserialize)]
+pub struct TransfiWebhookRequest {
+    #[serde(flatten)]
+    pub data: serde_json::Value,
+}
+
+#[derive(Debug, Serialize)]
+pub struct TransfiWebhookResponse {}
+
+#[post("/ramps/transfi/webhook")]
+pub(crate) async fn transfi_webhook_handler(
+    body: web::Json<TransfiWebhookRequest>,
+) -> Result<Json<TransfiWebhookResponse>> {
+    info!("Received Transfi webhook request with body: {body:#?}");
+    Ok(web::Json(TransfiWebhookResponse {}))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

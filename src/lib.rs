@@ -2,7 +2,8 @@ use actix_server::Server;
 use actix_web::{App, HttpServer};
 use middleware::ErrorLogging;
 use routes::{
-    get_status, persona_webhook_handler, sumsub_webhook_handler, unlimit_webhook_handler,
+    get_status, persona_webhook_handler, sumsub_webhook_handler, transfi_webhook_handler,
+    unlimit_webhook_handler,
 };
 
 mod db;
@@ -21,6 +22,7 @@ pub async fn create_server() -> eyre::Result<Server> {
             .service(unlimit_webhook_handler)
             .service(persona_webhook_handler)
             .service(sumsub_webhook_handler)
+            .service(transfi_webhook_handler)
     })
     .bind(("0.0.0.0", PORT))?
     .run())
